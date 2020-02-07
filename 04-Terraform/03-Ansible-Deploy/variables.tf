@@ -1,9 +1,9 @@
 variable "key_name" {
-  default = "ramyanv"
+  default = "vinninv"
 }
 
 variable "pvt_key" {
-  default = "/root/.ssh/rkey.pem"
+  default = "/root/.ssh/bkey.pem"
 }
 
 variable "us-east-zones" {
