@@ -4,7 +4,7 @@ node {
 
      
   stage('Git-Checkout') {
-   git 'https://github.com/vinni06/mindtree-devops-30Jan2020.git'
+   git 'https://github.com/vinni06/demo.git'
   }
     
  def project_path="demo/HotelManagement/jenkinsfile"
