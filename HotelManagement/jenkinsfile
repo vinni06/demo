@@ -7,7 +7,7 @@ node {
    git 'https://github.com/vinni06/demo.git'
   }
     
- def project_path="HotelManagement/jenkinsfile"
+ def project_path="HotelManagement"
  
  dir(project_path) {
     
