@@ -1,8 +1,0 @@
-version: '2'
-
-
-services:
-  hotel:
-    build: . 
-    ports:
-      - '30080:8080'
