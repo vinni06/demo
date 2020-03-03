@@ -94,7 +94,7 @@ dir("/root/.jenkins/workspace/SimpliLearn/HotelManagement") {
 			steps{
 				script{
 					stag=STAGE_NAME
-					sh"docker run -d -p 8082:8080 --name simplidemo $registry:$BUILD_NUMBER"
+					sh"docker run -d -p 8084:8080 --name simplidemo $registry:$BUILD_NUMBER"
 				}
 			}
 		}
