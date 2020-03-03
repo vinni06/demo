@@ -1,7 +1,7 @@
 def stag
 pipeline{
 	environment {
-		registry = "sri1056249/simpli"
+		registry = "vinni06/simpliproject1"
 		registryCredential = 'dockerHub'
 	}
 	agent any
@@ -10,14 +10,14 @@ pipeline{
 			steps {
 				script {
 					stag=STAGE_NAME
-					git "https://github.com/sri1056249/Simplilearn_project1.git"
+					git "https://github.com/vinni06/demo.git"
 				}
 			}
 		}
 
 		stage('S2 - Clean Packages') {
 			steps{
-				dir("/home/sri1056249/.jenkins/workspace/SimpliLearn/BookingProblem") {
+				dir("/root/.jenkins/workspace/SimpliLearn/HotelManagement") {
 					script {
 						stag=STAGE_NAME
 						sh  'mvn clean'
@@ -27,7 +27,7 @@ pipeline{
 		}
 		stage('S3 - Compile...') {
 			steps{
-				dir("/home/sri1056249/.jenkins/workspace/SimpliLearn/BookingProblem") {
+dir("/root/.jenkins/workspace/SimpliLearn/HotelManagement") {
 					script {
 						stag=STAGE_NAME
 						sh  'mvn compile'
@@ -38,7 +38,7 @@ pipeline{
 
 		stage('S6 - Packaging...') {
 			steps{
-				dir("/home/sri1056249/.jenkins/workspace/SimpliLearn/BookingProblem") {
+				dir("/root/.jenkins/workspace/SimpliLearn/HotelManagement") {
 					script {
 						stag=STAGE_NAME
 						sh 'mvn clean install'
@@ -49,7 +49,7 @@ pipeline{
 
 		stage('S9 - Creating Image...') {
 			steps{
-				dir("/home/sri1056249/.jenkins/workspace/SimpliLearn/BookingProblem") {
+				dir("/root/.jenkins/workspace/SimpliLearn/HotelManagement") {
 					script {
 						stag=STAGE_NAME
 						sh 'docker build -t $registry:$BUILD_NUMBER .'
@@ -109,7 +109,7 @@ pipeline{
 			from: '',
 			replyTo: '',
 			subject: "Pipeline Build Success ${currentBuild.fullDisplayName}",
-			to: 'saicharan713@gmail.com'
+			to: 'vineelaraoemmaneni@gmail.com'
 		}
 		failure {
 			mail bcc: '',
@@ -118,7 +118,7 @@ pipeline{
 			from: '',
 			replyTo: '',
 			subject: "Pipeline Build Failed ${currentBuild.fullDisplayName}",
-			to: 'saicharan713@gmail.com'
+			to: 'vineelaraoemmaneni@gmail.com'
 		}
 	}
 }
