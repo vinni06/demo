@@ -1,0 +1,125 @@
+def stag
+pipeline{
+	environment {
+		registry = "sri1056249/simpli"
+		registryCredential = 'dockerHub'
+	}
+	agent any
+	stages {
+		stage('S1 - Git Clone') {
+			steps {
+				script {
+					stag=STAGE_NAME
+					git "https://github.com/sri1056249/Simplilearn_project1.git"
+				}
+			}
+		}
+
+		stage('S2 - Clean Packages') {
+			steps{
+				dir("/home/sri1056249/.jenkins/workspace/SimpliLearn/BookingProblem") {
+					script {
+						stag=STAGE_NAME
+						sh  'mvn clean'
+					}
+				}
+			}
+		}
+		stage('S3 - Compile...') {
+			steps{
+				dir("/home/sri1056249/.jenkins/workspace/SimpliLearn/BookingProblem") {
+					script {
+						stag=STAGE_NAME
+						sh  'mvn compile'
+					}
+				}
+			}
+		}
+
+		stage('S6 - Packaging...') {
+			steps{
+				dir("/home/sri1056249/.jenkins/workspace/SimpliLearn/BookingProblem") {
+					script {
+						stag=STAGE_NAME
+						sh 'mvn clean install'
+					}
+				}
+			}
+		}
+
+		stage('S9 - Creating Image...') {
+			steps{
+				dir("/home/sri1056249/.jenkins/workspace/SimpliLearn/BookingProblem") {
+					script {
+						stag=STAGE_NAME
+						sh 'docker build -t $registry:$BUILD_NUMBER .'
+					}
+				}
+			}
+		}
+
+		stage('S10 - Deploy Image') {
+			steps{
+				script {
+					docker.withRegistry('', registryCredential ) {
+						stag=STAGE_NAME
+						sh 'docker push $registry:$BUILD_NUMBER'
+					}
+				}
+			}
+		}
+
+		stage('S11 - Removing unused images...') {
+			steps{
+				script {
+					stag=STAGE_NAME
+					sh "docker rmi $registry:$BUILD_NUMBER"
+				}
+			}
+		}
+
+		stage('S12 - Pulling image from your docker hub...'){
+			steps{
+				script{
+					stag=STAGE_NAME
+					sh "docker pull $registry:$BUILD_NUMBER"
+				}
+			}
+		}
+
+
+
+
+		stage('S13 - Deploying the container in tomcat server...'){
+			steps{
+				script{
+					stag=STAGE_NAME
+					sh"docker run -d -p 8087:8080 --name fulldemocharan $registry:$BUILD_NUMBER"
+				}
+			}
+		}
+	}
+
+
+	post {
+		success {
+			mail bcc: '',
+			body: "Build success - Passed all stages",
+			cc: '',
+			from: '',
+			replyTo: '',
+			subject: "Pipeline Build Success ${currentBuild.fullDisplayName}",
+			to: 'saicharan713@gmail.com'
+		}
+		failure {
+			mail bcc: '',
+			body: "Build failed at stage: ${stag}",
+			cc: '',
+			from: '',
+			replyTo: '',
+			subject: "Pipeline Build Failed ${currentBuild.fullDisplayName}",
+			to: 'saicharan713@gmail.com'
+		}
+	}
+}
+
